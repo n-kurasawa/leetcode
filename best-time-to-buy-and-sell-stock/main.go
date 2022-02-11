@@ -2,23 +2,30 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 func maxProfit(prices []int) int {
 	profit := 0
-	max := 0
-	for i := len(prices) - 1; i > 0; i-- {
-		if prices[i] <= max {
-			continue
-		}
-		max = prices[i]
-		for j := i - 1; j >= 0; j-- {
-			if profit < prices[i]-prices[j] {
-				profit = prices[i] - prices[j]
-			}
-		}
+	minValue := math.MaxInt
+	for _, v := range prices {
+		minValue = min(v, minValue)
+		profit = max(profit, v-minValue)
 	}
 	return profit
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 
 func main() {
