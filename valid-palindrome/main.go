@@ -6,27 +6,27 @@ import (
 )
 
 func isPalindrome(s string) bool {
-	l := strings.ToLower(s)
-	r := []rune(l)
-	for i := 0; i < len(r); i++ {
-		if !isAlphanumeric(int(r[i])) {
-			r = append(r[:i], r[i+1:]...)
-			i--
+	i, j := 0, len(s)-1
+	for i < j {
+		if !isAlphanumeric(s[i]) {
+			i++
+			continue
 		}
-	}
-	for i := 0; i < len(r)/2; i++ {
-		if r[i] != r[len(r)-1-i] {
+		if !isAlphanumeric(s[j]) {
+			j--
+			continue
+		}
+		if !strings.EqualFold(string(s[i]), string(s[j])) {
 			return false
 		}
+		i++
+		j--
 	}
 	return true
 }
 
-func isAlphanumeric(c int) bool {
-	if '0' <= c && c <= '9' {
-		return true
-	}
-	if 'a' <= c && c <= 'z' {
+func isAlphanumeric(c byte) bool {
+	if ('0' <= c && c <= '9') || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') {
 		return true
 	}
 	return false
