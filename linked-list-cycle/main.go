@@ -8,15 +8,19 @@ type ListNode struct {
 }
 
 func hasCycle(head *ListNode) bool {
-	m := map[*ListNode]bool{}
-	for head != nil {
-		if m[head] {
-			return true
-		}
-		m[head] = true
-		head = head.Next
+	if head == nil || head.Next == nil {
+		return false
 	}
-	return false
+	slow := head
+	fast := head.Next
+	for slow != fast {
+		if slow == nil || fast == nil {
+			return false
+		}
+		slow = slow.Next
+		fast = fast.Next.Next
+	}
+	return true
 }
 
 func main() {
