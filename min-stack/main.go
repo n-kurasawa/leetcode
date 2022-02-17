@@ -2,19 +2,38 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
 type MinStack struct {
-	values []int
+	values [][]int
 }
 
 func Constructor() MinStack {
 	return MinStack{}
 }
 
+func (this *MinStack) last() []int {
+	return this.values[len(this.values)-1]
+}
+
+func (this *MinStack) lastVal() int {
+	return this.values[len(this.values)-1][0]
+}
+
+func (this *MinStack) lastMin() int {
+	return this.values[len(this.values)-1][1]
+}
+
 func (this *MinStack) Push(val int) {
-	this.values = append(this.values, val)
+	if len(this.values) == 0 {
+		this.values = append(this.values, []int{val, val})
+	} else {
+		if val < this.lastMin() {
+			this.values = append(this.values, []int{val, val})
+		} else {
+			this.values = append(this.values, []int{val, this.lastMin()})
+		}
+	}
 }
 
 func (this *MinStack) Pop() {
@@ -28,17 +47,11 @@ func (this *MinStack) Top() int {
 	if len(this.values) == 0 {
 		return 0
 	}
-	return this.values[len(this.values)-1]
+	return this.lastVal()
 }
 
 func (this *MinStack) GetMin() int {
-	min := math.MaxInt
-	for _, v := range this.values {
-		if v < min {
-			min = v
-		}
-	}
-	return min
+	return this.lastMin()
 }
 
 func main() {
